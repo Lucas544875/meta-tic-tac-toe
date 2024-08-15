@@ -3,23 +3,33 @@ export class TitleScene extends Phaser.Scene {
     super('title');
   }
 
+  preload() {
+    // this.load.image('robot', 'assets/robot.png');
+    // this.load.image('logo', 'assets/phaser3-logo.png');
+    this.load.image('solo', 'assets/solo.png');
+    this.load.image('duo', 'assets/duo.png');
+  }
+
   create() {
     const { width, height } = this.game.canvas;
 
-    this.add.image(width/2, height/2, 'logo');
-    this.add.text(width/2, height/2+60, 'クリックでスタート').setOrigin(0.5);
-
-    // 画面を埋めるようなZoneを作成
-    const zone = this.add.zone(width/2, height/2, width, height);
-
-    // Zoneをクリックできるように設定
-    zone.setInteractive({
-      useHandCursor: true  // マウスオーバーでカーソルが指マークになる
-    });
-
-    // ZoneをクリックしたらMainSceneに遷移
-    zone.on('pointerdown', () => {
+    const soloMode = this.add
+    .image(width/2-150, height/2, 'solo')
+    .setDisplaySize(300, 300);
+    soloMode.on('pointerdown', () => {
       this.scene.start('main', { timelineID: 'start' });
+    }).setInteractive({
+      useHandCursor: true
     });
+
+    const duoMode = this.add
+    .image(width/2+150, height/2, 'duo')
+    .setDisplaySize(300, 300);
+    duoMode.on('pointerdown', () => {
+      this.scene.start('main', { timelineID: 'start' });
+    }).setInteractive({
+      useHandCursor: true
+    });
+    
   }
 }

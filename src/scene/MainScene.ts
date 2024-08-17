@@ -1,10 +1,6 @@
-import { DialogBox, DialogBoxConfig } from '../class/DialogBox';
-import { TimelinePlayer } from '../class/TimelinePlayer';
-import { Timeline } from '../type/Timeline';
-import { timelineData } from '../data/timeline';
-
 export class MainScene extends Phaser.Scene {
-  private timeline?: Timeline;
+  private gameMode?: "solo" | "duo";
+  private difficulty?: "easy" | "hard" | "veryhard" | null;
 
   constructor() {
     super('main');
@@ -13,48 +9,26 @@ export class MainScene extends Phaser.Scene {
   init(data: any) {
     // this.scene.restart()の第1引数もしくは
     // this.scene.start()の第2引数に指定されたオブジェクトがdataに渡される
-    const timelineID = data.timelineID || 'start';
+    // const timelineID = data.timelineID || 'start';
+    this.gameMode = data.gameMode || 'solo';
+    this.difficulty = data.difficulty || null;
 
-    if (!(timelineID in timelineData)) {
-      console.error(`[ERROR] タイムラインID[${timelineID}]は登録されていません`);
-      // 登録されていないタイムラインIDが指定されていたらタイトルシーンに遷移する
-      this.scene.start('title');
-      return;
-    }
+    // if (!(timelineID in timelineData)) {
+    //   console.error(`[ERROR] タイムラインID[${timelineID}]は登録されていません`);
+    //   // 登録されていないタイムラインIDが指定されていたらタイトルシーンに遷移する
+    //   this.scene.start('title');
+    //   return;
+    // }
 
-    this.timeline = timelineData[timelineID];
+    // this.timeline = timelineData[timelineID];
   }
 
   create() {
-    if (!this.timeline) {
+    if (!this.gameMode) {
       return;
     }
 
     const { width, height } = this.game.canvas;
-
-    const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
-      fontFamily: '"Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif',
-      fontSize: '24px'
-    };
-
-    const dialogBoxHeight = 150;
-    const dialogBoxMargin = 10;
-    const dialogBoxConfig: DialogBoxConfig = {
-      x: width/2,
-      y: height - dialogBoxMargin - dialogBoxHeight/2,
-      width: width - dialogBoxMargin*2,
-      height: dialogBoxHeight,
-      padding: 10,
-      margin: dialogBoxMargin,
-      textStyle: textStyle
-    };
-
-    const dialoxBox = new DialogBox(this, dialogBoxConfig);
-
-    // タイムラインプレイヤーの作成
-    const timelinePlayer = new TimelinePlayer(this, dialoxBox, textStyle);
-
-    // タイムラインの再生開始
-    timelinePlayer.start(this.timeline);
+    this.add.text(width / 2, height / 2, 'gameMode:'+this.gameMode+", difficulty:"+ this.difficulty, { fontSize: '32px' }).setOrigin(0.5);
   }
 }

@@ -13,6 +13,7 @@ export class TitleScene extends Phaser.Scene {
   create() {
     const { width, height } = this.game.canvas;
 
+    // 一人で遊ぶモード
     const soloMode = this.add
     .image(width/2-150, height/2, 'solo')
     .setDisplaySize(300, 300);
@@ -22,11 +23,12 @@ export class TitleScene extends Phaser.Scene {
       useHandCursor: true
     });
 
+    // 二人で遊ぶモード
     const duoMode = this.add
     .image(width/2+150, height/2, 'duo')
     .setDisplaySize(300, 300);
     duoMode.on('pointerdown', () => {
-      this.scene.start('main', { timelineID: 'start' });
+      this.scene.start('selectDifficulty');
     }).setInteractive({
       useHandCursor: true
     });

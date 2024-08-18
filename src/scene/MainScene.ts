@@ -62,7 +62,8 @@ export class MainScene extends Phaser.Scene {
       return false;
     }
     const isPointed = !this.pointedCell || (this.pointedCell.k === i && this.pointedCell.l === j);
-    return isPointed && this.metaBoadState[i][j] === "-" && this.boadState[i][j][k][l] === "-";
+    const isSettled = this.pointedCell && this.metaBoadState[this.pointedCell.k][this.pointedCell.l] !== "-"
+    return isSettled || (isPointed && this.metaBoadState[i][j] === "-" && this.boadState[i][j][k][l] === "-");
   }
 
   private updateState (i:number, j:number, k:number, l:number):GameState {

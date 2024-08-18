@@ -1,3 +1,5 @@
+import { GameState } from "../type/GameState";
+
 export class TitleScene extends Phaser.Scene {
   constructor() {
     super('title');
@@ -24,11 +26,19 @@ export class TitleScene extends Phaser.Scene {
     });
 
     // 二人で遊ぶモード
+    const gameState:GameState = {
+      player: "0",
+      gameMode: "duo",
+      difficulty: null,
+      boadState: Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill("-")))),
+      metaBoadState: Array(3).fill(Array(3).fill("-"))
+    };
+
     const duoMode = this.add
     .image(width/2-150, height/2, 'duo')
     .setDisplaySize(300, 300);
     duoMode.on('pointerdown', () => {
-      this.scene.start('main', { gameMode: 'duo' });
+      this.scene.start('main', gameState);
     }).setInteractive({
       useHandCursor: true
     });

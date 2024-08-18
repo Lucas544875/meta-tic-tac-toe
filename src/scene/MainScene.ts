@@ -62,7 +62,7 @@ export class MainScene extends Phaser.Scene {
       return false;
     }
     const isPointed = !this.pointedCell || (this.pointedCell.k === i && this.pointedCell.l === j);
-    const isSettled = this.pointedCell && this.metaBoadState[this.pointedCell.k][this.pointedCell.l] !== "-"
+    const isSettled = this.pointedCell && (this.metaBoadState[this.pointedCell.k][this.pointedCell.l] !== "-" || this.boadState[this.pointedCell.k][this.pointedCell.l].every(row => row.every(cell => cell !== "-")));
     return isSettled || (isPointed && this.metaBoadState[i][j] === "-" && this.boadState[i][j][k][l] === "-");
   }
 

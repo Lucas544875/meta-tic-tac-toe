@@ -1,7 +1,9 @@
 import { GameState } from "../type/GameState";
-import { copyBoadState, copyMetaBoadState } from "../data/util";
+import { BoardManager } from "../class/BoadManager";
+// import { copyBoadState, copyMetaBoadState } from "../data/util";
 
 export class MainScene extends Phaser.Scene {
+  private gameState?: GameState;
   private player?: "0" | "1";
   private gameMode?: "solo" | "duo";
   private difficulty?: "easy" | "hard" | "veryhard" | null;
@@ -23,6 +25,7 @@ export class MainScene extends Phaser.Scene {
     // this.scene.restart()の第1引数もしくは
     // this.scene.start()の第2引数に指定されたオブジェクトがdataに渡される
     // const timelineID = data.timelineID || 'start';
+    this.gameState = data;
     this.player = data.player || '0';
     this.gameMode = data.gameMode || 'duo';
     this.difficulty = data.difficulty || null;
@@ -39,39 +42,12 @@ export class MainScene extends Phaser.Scene {
     // this.timeline = timelineData[timelineID];
   }
 
-  private checkWin(b:("0"|"1"|"-")[][]): "0"|"1"|"-" {
-    for (let i = 0; i < 3; i++) {
-      if (b[i][0] !== "-" && b[i][0] === b[i][1] && b[i][1] === b[i][2]) {
-        return b[i][0];
-      }
-      if (b[0][i] !== "-" && b[0][i] === b[1][i] && b[1][i] === b[2][i]) {
-        return b[0][i];
-      }
-    }
-    if (b[0][0] !== "-" && b[0][0] === b[1][1] && b[1][1] === b[2][2]) {
-      return b[0][0];
-    }
-    if (b[0][2] !== "-" && b[0][2] === b[1][1] && b[1][1] === b[2][0]) {
-      return b[0][2];
-    }
-    return "-";
-  }
-
-  private availableCell(i:number, j:number, k:number, l:number) {
-    if (!this.metaBoadState || !this.boadState) {
-      return false;
-    }
-    const isPointed = !this.pointedCell || (this.pointedCell.k === i && this.pointedCell.l === j);
-    const isSettled = this.pointedCell && (this.metaBoadState[this.pointedCell.k][this.pointedCell.l] !== "-" || this.boadState[this.pointedCell.k][this.pointedCell.l].every(row => row.every(cell => cell !== "-")));
-    return isSettled || (isPointed && this.metaBoadState[i][j] === "-" && this.boadState[i][j][k][l] === "-");
-  }
-
   private updateState (i:number, j:number, k:number, l:number):GameState {
     const nextplayer = this.player === "0" ? "1" : "0";
-    const nextBoadState = copyBoadState(this.boadState!)
+    const nextBoadState = BoardManager.copyBoadState(this.boadState!)
     nextBoadState![i][j][k][l] = this.player!;
-    const nextMetaBoadState = copyMetaBoadState(this.metaBoadState!)
-    if (this.checkWin(nextBoadState![i][j]) === this.player) {
+    const nextMetaBoadState = BoardManager.copyMetaBoadState(this.metaBoadState!)
+    if (BoardManager.checkWinner(nextBoadState![i][j]) === this.player) {
       nextMetaBoadState![i][j] = this.player!;
     }
     
@@ -117,7 +93,7 @@ export class MainScene extends Phaser.Scene {
               const cell = this.add.image(x, y, "batsu").setDisplaySize(boadWidth/10, boadWidth/10);
               subBoad.add(cell);
             }else{
-              if (this.availableCell(i, j, k, l)) {
+              if (BoardManager.availableCell(this.gameState!, i, j, k, l)) {
                 const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10).setInteractive({
                   useHandCursor: true
                 })

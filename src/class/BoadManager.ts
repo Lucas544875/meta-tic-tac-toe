@@ -38,7 +38,8 @@ export class BoardManager {
     }
     const isPointed = !gameState.pointedCell || (gameState.pointedCell.k === i && gameState.pointedCell.l === j);
     const isSettled = gameState.pointedCell && (gameState.metaBoadState[gameState.pointedCell.k][gameState.pointedCell.l] !== "-" || gameState.boadState[gameState.pointedCell.k][gameState.pointedCell.l].every(row => row.every(cell => cell !== "-")));
-    return isSettled || (isPointed && gameState.metaBoadState[i][j] === "-" && gameState.boadState[i][j][k][l] === "-");
+
+    return (isSettled && gameState.metaBoadState[i][j] === "-") || (isPointed && gameState.metaBoadState[i][j] === "-" && gameState.boadState[i][j][k][l] === "-");
   }
 
   static updateState (gameState:GameState, i:number, j:number, k:number, l:number):GameState {

@@ -73,7 +73,7 @@ export class MainScene extends Phaser.Scene {
               && this.pointedCell.j === j 
               && this.pointedCell.k === k 
               && this.pointedCell.l === l) {
-                const r = this.add.rectangle(x, y, boadWidth/10, boadWidth/10, 0x1CA6DD, 0.5);
+                const r = this.add.rectangle(x, y, boadWidth/10, boadWidth/10, 0x86A1EB, 0.5);
                 subBoad.add(r);
             }
             if (this.boadState[i][j][k][l] === "0") { // 〇の配置
@@ -97,6 +97,16 @@ export class MainScene extends Phaser.Scene {
               }
             }
           }
+        }
+        // メタ盤面の齣を表示
+        if (!this.metaBoadState){
+          // 何もしない
+        }else if(this.metaBoadState[i][j] === "0") { // 〇の配置
+          const cell = this.add.image(boadWidth/9, boadWidth/9, "maru").setDisplaySize(boadWidth/4, boadWidth/4);
+          subBoad.add(cell);
+        }else if(this.metaBoadState[i][j] === "1") { // ×の配置
+          const cell = this.add.image(boadWidth/9, boadWidth/9, "batsu").setDisplaySize(boadWidth/4, boadWidth/4);
+          subBoad.add(cell);
         }
       }
     }

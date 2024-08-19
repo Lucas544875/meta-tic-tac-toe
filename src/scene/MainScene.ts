@@ -8,7 +8,7 @@ export class MainScene extends Phaser.Scene {
   private difficulty?: "easy" | "hard" | "veryhard" | null;
   private boadState?: ("0" | "1" | "-")[][][][];
   private metaBoadState?: ("0" | "1" | "-")[][];
-  private pointedCell?: {k:number, l:number};
+  private pointedCell?: {i:number, j:number, k:number, l:number};
 
   constructor() {
     super('main');
@@ -67,6 +67,15 @@ export class MainScene extends Phaser.Scene {
           for (let l = 0; l < 3; l++) {
             const x = boadWidth*k/9;
             const y = boadWidth*l/9;
+            // 前の手番で置かれた駒の表示
+            if (this.pointedCell 
+              && this.pointedCell.i === i 
+              && this.pointedCell.j === j 
+              && this.pointedCell.k === k 
+              && this.pointedCell.l === l) {
+                const r = this.add.rectangle(x, y, boadWidth/10, boadWidth/10, 0x1CA6DD, 0.5);
+                subBoad.add(r);
+            }
             if (this.boadState[i][j][k][l] === "0") { // 〇の配置
               const cell = this.add.image(x, y, "maru").setDisplaySize(boadWidth/10, boadWidth/10);
               subBoad.add(cell);

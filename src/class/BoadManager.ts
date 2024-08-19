@@ -49,8 +49,7 @@ export class BoardManager {
     if (BoardManager.checkWinner(nextBoadState[i][j]) === gameState.player) {
       nextMetaBoadState[i][j] = gameState.player;
     }
-    
-    const nextPointedCell = {k, l};
+    const nextPointedCell = {i, j, k, l};
     return {
       player: nextplayer,
       gameMode: gameState.gameMode,

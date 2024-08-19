@@ -5,5 +5,5 @@ export type GameState = {
   difficulty: "easy" | "hard" | "veryhard" | null,
   boadState:  ("0"|"1"|"-") [][][][],
   metaBoadState: ("0"|"1"|"-")[][],
-  pointedCell?: {k:number, l:number}
+  pointedCell?: {i:number, j:number, k:number, l:number}
 }

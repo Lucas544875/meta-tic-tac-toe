@@ -1,6 +1,5 @@
 import { GameState } from "../type/GameState";
 import { BoardManager } from "../class/BoadManager";
-// import { copyBoadState, copyMetaBoadState } from "../data/util";
 
 export class MainScene extends Phaser.Scene {
   private gameState?: GameState;
@@ -42,26 +41,6 @@ export class MainScene extends Phaser.Scene {
     // this.timeline = timelineData[timelineID];
   }
 
-  private updateState (i:number, j:number, k:number, l:number):GameState {
-    const nextplayer = this.player === "0" ? "1" : "0";
-    const nextBoadState = BoardManager.copyBoadState(this.boadState!)
-    nextBoadState![i][j][k][l] = this.player!;
-    const nextMetaBoadState = BoardManager.copyMetaBoadState(this.metaBoadState!)
-    if (BoardManager.checkWinner(nextBoadState![i][j]) === this.player) {
-      nextMetaBoadState![i][j] = this.player!;
-    }
-    
-    const nextPointedCell = {k, l};
-    return {
-      player: nextplayer,
-      gameMode: this.gameMode!,
-      difficulty: this.difficulty!,
-      boadState: nextBoadState!,
-      metaBoadState: nextMetaBoadState!,
-      pointedCell: nextPointedCell
-    };
-  }
-
   private createBoad() {
     if (!this.boadState) {
       return;
@@ -69,9 +48,11 @@ export class MainScene extends Phaser.Scene {
 
     const { width, height } = this.game.canvas;
     const boadWidth = Math.min(width, height);
-
+    
+    // 盤面の枠
     const boadFrame = this.add.image(width / 2, height / 2, "boad").setDisplaySize(height, height);
 
+    // 駒の配置
     const boadOffsetx = 35;
     const boadOffsety = 35;
     const boad = this.add.container(width/2 - boadWidth/2 + boadOffsetx, height/2 - boadWidth/2 + boadOffsety);
@@ -86,19 +67,20 @@ export class MainScene extends Phaser.Scene {
           for (let l = 0; l < 3; l++) {
             const x = boadWidth*k/9;
             const y = boadWidth*l/9;
-            if (this.boadState[i][j][k][l] === "0") {
+            if (this.boadState[i][j][k][l] === "0") { // 〇の配置
               const cell = this.add.image(x, y, "maru").setDisplaySize(boadWidth/10, boadWidth/10);
               subBoad.add(cell);
-            }else if (this.boadState[i][j][k][l] === "1") {
+            }else if (this.boadState[i][j][k][l] === "1") { // ×の配置
               const cell = this.add.image(x, y, "batsu").setDisplaySize(boadWidth/10, boadWidth/10);
               subBoad.add(cell);
             }else{
+              // 配置可能なマスの表示
               if (BoardManager.availableCell(this.gameState!, i, j, k, l)) {
                 const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10).setInteractive({
                   useHandCursor: true
                 })
                 .on('pointerdown', () => {
-                  this.scene.start('main', this.updateState(i, j, k, l));
+                  this.scene.start('main', BoardManager.updateState(this.gameState!, i, j, k, l));
                 });
                 const r = this.add.rectangle(x, y, boadWidth/10, boadWidth/10, 0x9966ff, 0.5);
                 subBoad.add(cell);

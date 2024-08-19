@@ -40,4 +40,24 @@ export class BoardManager {
     const isSettled = gameState.pointedCell && (gameState.metaBoadState[gameState.pointedCell.k][gameState.pointedCell.l] !== "-" || gameState.boadState[gameState.pointedCell.k][gameState.pointedCell.l].every(row => row.every(cell => cell !== "-")));
     return isSettled || (isPointed && gameState.metaBoadState[i][j] === "-" && gameState.boadState[i][j][k][l] === "-");
   }
+
+  static updateState (gameState:GameState, i:number, j:number, k:number, l:number):GameState {
+    const nextplayer = gameState.player === "0" ? "1" : "0";
+    const nextBoadState = BoardManager.copyBoadState(gameState.boadState)
+    nextBoadState[i][j][k][l] = gameState.player;
+    const nextMetaBoadState = BoardManager.copyMetaBoadState(gameState.metaBoadState)
+    if (BoardManager.checkWinner(nextBoadState[i][j]) === gameState.player) {
+      nextMetaBoadState[i][j] = gameState.player;
+    }
+    
+    const nextPointedCell = {k, l};
+    return {
+      player: nextplayer,
+      gameMode: gameState.gameMode,
+      difficulty: gameState.difficulty,
+      boadState: nextBoadState,
+      metaBoadState: nextMetaBoadState,
+      pointedCell: nextPointedCell
+    };
+  }
 }

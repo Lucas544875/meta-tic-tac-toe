@@ -88,35 +88,28 @@ export class EndingScene extends Phaser.Scene {
 
     if (this.gameMode === "solo" && this.difficulty) {
       if (this.winner === "-") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に引き分け`).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に引き分け`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "0") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に敗北`).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に敗北`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "1") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に勝利`).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に勝利`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }
     }else if (this.gameMode === "duo") {
       if (this.winner === "-") {
-        this.add.text(width/2, height/2-100, `引き分け`).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `引き分け`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "0") {
-        this.add.text(width/2, height/2-100, `〇の勝ち`).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `〇の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "1") {
-        this.add.text(width/2, height/2-100, `×の勝ち`).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `×の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }
     }
 
-    const gameState:GameState = {
-      player: "0",
-      gameMode: this.gameMode!,
-      difficulty: this.difficulty!,
-      boadState: Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill("-")))),
-      metaBoadState: Array(3).fill(Array(3).fill("-"))
-    }
-    const retry = this.add.image(width/2, height/2+100, "retry").setDisplaySize(200, 100);
-    retry.setInteractive({
+    const retry = this.add.image(width/2, height/2+100, "retry").setDisplaySize(150, 150)
+    .setInteractive({
       useHandCursor: true
     })
     .on('pointerdown', () => {
-      this.scene.start('main', gameState);  // TitleSceneに遷移
+      this.scene.start('title');  // TitleSceneに遷移
     });
   }
 }

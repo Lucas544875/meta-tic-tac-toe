@@ -108,9 +108,9 @@ export class MainScene extends Phaser.Scene {
     const { width, height } = this.game.canvas;
 
     this.createBoad();
-    if (BoadManager.isHalt(this.gameState!)) {
+    if (BoadManager.isHalt(this.gameState!) || true) {
       this.scene.start('ending', this.gameState);
     }
-    
+
   }
 }

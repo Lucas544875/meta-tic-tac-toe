@@ -89,9 +89,9 @@ export class EndingScene extends Phaser.Scene {
     if (this.gameMode === "solo" && this.difficulty) {
       if (this.winner === "-") {
         this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に引き分け`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
-      }else if (this.winner === "0") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に敗北`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "1") {
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に敗北`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+      }else if (this.winner === "0") {
         this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に勝利`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }
     }else if (this.gameMode === "duo") {

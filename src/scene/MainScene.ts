@@ -1,5 +1,6 @@
 import { GameState } from "../type/GameState";
 import { BoadManager } from "../class/BoadManager";
+import { Agent } from "../class/agent";
 
 export class MainScene extends Phaser.Scene {
   private gameState?: GameState;
@@ -9,6 +10,7 @@ export class MainScene extends Phaser.Scene {
   private boadState?: ("0" | "1" | "-")[][][][];
   private metaBoadState?: ("0" | "1" | "-")[][];
   private pointedCell?: {i:number, j:number, k:number, l:number};
+  private agent?: Agent;
 
   constructor() {
     super('main');
@@ -28,6 +30,7 @@ export class MainScene extends Phaser.Scene {
     this.boadState = data.boadState || Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill("-"))));
     this.metaBoadState = data.metaBoadState || Array(3).fill(Array(3).fill("-"));
     this.pointedCell = data.pointedCell || undefined;
+    this.agent = Agent.getInstance(this.difficulty);
   }
 
   private createBoad() {
@@ -116,8 +119,9 @@ export class MainScene extends Phaser.Scene {
       this.scene.start('ending', this.gameState);
     }
 
-    // if (this.gameMode === "solo" && this.player === "1") {
-    //   // AIの手番
-    // }
+    if (this.gameMode === "solo" && this.player === "1") {
+      let cell = this.agent!.play(this.gameState!)
+      this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l));
+    }
   }
 }

@@ -46,6 +46,8 @@ export class MainScene extends Phaser.Scene {
     const boadOffsety = 35;
     const boad = this.add.container(width/2 - boadWidth/2 + boadOffsetx, height/2 - boadWidth/2 + boadOffsety);
 
+    const availableCells = BoadManager.availableCells(this.gameState!);
+
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         const subBoadOffsetx = 0;
@@ -73,7 +75,7 @@ export class MainScene extends Phaser.Scene {
               subBoad.add(cell);
             }else{
               // 配置可能なマスの表示
-              if (BoadManager.availableCell(this.gameState!, i, j, k, l)) {
+              if (availableCells.some(e => e.i === i && e.j === j && e.k === k && e.l === l)) {
                 const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10)
                 if (this.gameMode === "duo" || this.player === "0") {
                   cell.setInteractive({
@@ -114,5 +116,8 @@ export class MainScene extends Phaser.Scene {
       this.scene.start('ending', this.gameState);
     }
 
+    // if (this.gameMode === "solo" && this.player === "1") {
+    //   // AIの手番
+    // }
   }
 }

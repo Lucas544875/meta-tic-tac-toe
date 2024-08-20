@@ -42,6 +42,58 @@ export class BoadManager {
     return (isSettled && gameState.metaBoadState[i][j] === "-") || (isPointed && gameState.metaBoadState[i][j] === "-" && gameState.boadState[i][j][k][l] === "-");
   }
 
+  static availableCells(gameState:GameState):{i:number, j:number, k:number, l:number}[] {
+    if (!gameState.metaBoadState || !gameState.boadState) {
+      return [];
+    }
+    // pointedCellがない場合(初手)
+    if (!gameState.pointedCell){
+      // すべてのマス
+      let result = [];
+      for (let i = 0; i < 3; i++) {
+        for(let j = 0; j < 3; j++) {
+          for(let k = 0; k < 3; k++) {
+            for(let l = 0; l < 3; l++) {
+              result.push({i, j, k, l});
+            }
+          }
+        }
+      }
+      return result;
+    }else if(gameState.metaBoadState[gameState.pointedCell.k][gameState.pointedCell.l] !== "-" || gameState.boadState[gameState.pointedCell.k][gameState.pointedCell.l].every(row => row.every(cell => cell !== "-"))){
+      // pointedCellがあり、メタマスの大勢が決している場合
+      // pointedCellがあり、メタマスがすべて埋まっている場合
+      let result = [];
+      for (let i = 0; i < 3; i++) {
+        for(let j = 0; j < 3; j++) {
+          if(gameState.metaBoadState[i][j] === "-") {
+            for(let k = 0; k < 3; k++) {
+              for(let l = 0; l < 3; l++) {
+                if (gameState.metaBoadState[i][j] === "-") {
+                  result.push({i, j, k, l});
+                }
+              }
+            }
+          }
+        }
+      }
+      return result;
+    }else{
+      // pointedCellがあり、空いてるマスがある場合
+      let result = [];
+      const i = gameState.pointedCell.k;
+      const j = gameState.pointedCell.l;
+      for(let k = 0; k < 3; k++) {
+        for(let l = 0; l < 3; l++) {
+          if (gameState.boadState[i][j][k][l] === "-") {
+            result.push({i, j, k, l});
+          }
+        }
+      }
+      return result;
+    }
+  }
+
   static updateState (gameState:GameState, i:number, j:number, k:number, l:number):GameState {
     const nextplayer = gameState.player === "0" ? "1" : "0";
     const nextBoadState = this.copyBoadState(gameState.boadState)

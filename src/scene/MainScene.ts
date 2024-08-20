@@ -76,10 +76,12 @@ export class MainScene extends Phaser.Scene {
               if (BoadManager.availableCell(this.gameState!, i, j, k, l)) {
                 const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10).setInteractive({
                   useHandCursor: true
-                })
-                .on('pointerdown', () => {
-                  this.scene.start('main', BoadManager.updateState(this.gameState!, i, j, k, l));
                 });
+                if (this.gameMode === "duo" || this.player === "0") {
+                  cell.on('pointerdown', () => {
+                    this.scene.start('main', BoadManager.updateState(this.gameState!, i, j, k, l));
+                  });
+                }
                 const r = this.add.rectangle(x, y, boadWidth/10, boadWidth/10, 0x9966ff, 0.5);
                 subBoad.add(cell);
                 subBoad.add(r);
@@ -108,7 +110,7 @@ export class MainScene extends Phaser.Scene {
     const { width, height } = this.game.canvas;
 
     this.createBoad();
-    if (BoadManager.isHalt(this.gameState!) || true) {
+    if (BoadManager.isHalt(this.gameState!)) {
       this.scene.start('ending', this.gameState);
     }
 

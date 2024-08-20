@@ -30,7 +30,9 @@ export class MainScene extends Phaser.Scene {
     this.boadState = data.boadState || Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill("-"))));
     this.metaBoadState = data.metaBoadState || Array(3).fill(Array(3).fill("-"));
     this.pointedCell = data.pointedCell || undefined;
-    this.agent = Agent.getInstance(this.difficulty);
+    if (this.difficulty !== null) {
+      this.agent = Agent.getInstance(this.difficulty);
+    }
   }
 
   private createBoad() {
@@ -120,7 +122,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     if (this.gameMode === "solo" && this.player === "1") {
-      let cell = this.agent!.play(this.gameState!)
+      let cell = this.agent!.play!(this.gameState!)
       this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l));
     }
   }

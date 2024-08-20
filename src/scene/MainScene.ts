@@ -1,5 +1,5 @@
 import { GameState } from "../type/GameState";
-import { BoardManager } from "../class/BoadManager";
+import { BoadManager } from "../class/BoadManager";
 
 export class MainScene extends Phaser.Scene {
   private gameState?: GameState;
@@ -21,9 +21,6 @@ export class MainScene extends Phaser.Scene {
   }
 
   init(data: GameState) {
-    // this.scene.restart()の第1引数もしくは
-    // this.scene.start()の第2引数に指定されたオブジェクトがdataに渡される
-    // const timelineID = data.timelineID || 'start';
     this.gameState = data;
     this.player = data.player || '0';
     this.gameMode = data.gameMode || 'duo';
@@ -31,14 +28,6 @@ export class MainScene extends Phaser.Scene {
     this.boadState = data.boadState || Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill("-"))));
     this.metaBoadState = data.metaBoadState || Array(3).fill(Array(3).fill("-"));
     this.pointedCell = data.pointedCell || undefined;
-    // if (!(timelineID in timelineData)) {
-    //   console.error(`[ERROR] タイムラインID[${timelineID}]は登録されていません`);
-    //   // 登録されていないタイムラインIDが指定されていたらタイトルシーンに遷移する
-    //   this.scene.start('title');
-    //   return;
-    // }
-
-    // this.timeline = timelineData[timelineID];
   }
 
   private createBoad() {
@@ -84,12 +73,12 @@ export class MainScene extends Phaser.Scene {
               subBoad.add(cell);
             }else{
               // 配置可能なマスの表示
-              if (BoardManager.availableCell(this.gameState!, i, j, k, l)) {
+              if (BoadManager.availableCell(this.gameState!, i, j, k, l)) {
                 const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10).setInteractive({
                   useHandCursor: true
                 })
                 .on('pointerdown', () => {
-                  this.scene.start('main', BoardManager.updateState(this.gameState!, i, j, k, l));
+                  this.scene.start('main', BoadManager.updateState(this.gameState!, i, j, k, l));
                 });
                 const r = this.add.rectangle(x, y, boadWidth/10, boadWidth/10, 0x9966ff, 0.5);
                 subBoad.add(cell);
@@ -118,7 +107,10 @@ export class MainScene extends Phaser.Scene {
     }
     const { width, height } = this.game.canvas;
 
-    // this.add.text(width / 2, height / 2, 'gameMode:'+this.gameMode+", difficulty:"+ this.difficulty, { fontSize: '32px' }).setOrigin(0.5);
     this.createBoad();
+    if (BoadManager.isHalt(this.gameState!)) {
+      this.scene.start('ending', this.gameState);
+    }
+    
   }
 }

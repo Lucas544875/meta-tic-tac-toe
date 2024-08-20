@@ -1,5 +1,5 @@
 import { GameState } from "../type/GameState";
-export class BoardManager {
+export class BoadManager {
   private gamesState: GameState;
 
   constructor(gameState: GameState) {
@@ -44,10 +44,10 @@ export class BoardManager {
 
   static updateState (gameState:GameState, i:number, j:number, k:number, l:number):GameState {
     const nextplayer = gameState.player === "0" ? "1" : "0";
-    const nextBoadState = BoardManager.copyBoadState(gameState.boadState)
+    const nextBoadState = this.copyBoadState(gameState.boadState)
     nextBoadState[i][j][k][l] = gameState.player;
-    const nextMetaBoadState = BoardManager.copyMetaBoadState(gameState.metaBoadState)
-    if (BoardManager.checkWinner(nextBoadState[i][j]) === gameState.player) {
+    const nextMetaBoadState = this.copyMetaBoadState(gameState.metaBoadState)
+    if (this.checkWinner(nextBoadState[i][j]) === gameState.player) {
       nextMetaBoadState[i][j] = gameState.player;
     }
     const nextPointedCell = {i, j, k, l};
@@ -59,5 +59,15 @@ export class BoardManager {
       metaBoadState: nextMetaBoadState,
       pointedCell: nextPointedCell
     };
+  }
+  static isHalt(gameState:GameState):boolean {
+    let flag : boolean;
+    flag = this.checkWinner(gameState.metaBoadState) !== "-"
+    flag = flag || gameState.boadState.every((metaRow) => (metaRow.every(
+      metaCell => (
+        BoadManager.checkWinner(metaCell) !== "-" || metaCell.every(row => row.every(cell => cell !== "-"))
+      )
+    )));
+    return flag;
   }
 }

@@ -71,4 +71,71 @@ export class Agent {
   private veryhardStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
     return this.randomStrategy(gameState);
   }
+
+  static evaluate(boadState: ("0"|"1"|"-") [][][][], metaBoadState: ("0"|"1"|"-") [][] ): number {
+    let score = 0;
+    const win = 2000
+    const metaReach = 100
+    const metaBlock = 60
+    const subReach = 10
+
+    let winner = BoadManager.checkWinner(metaBoadState);
+    if (winner === "1") {
+      score += win;
+    } else if (winner === "0") {
+      score -= win;
+    }
+
+    for (let i = 0; i < 3; i++){
+      for (let j = 0; j < 3; j++) {
+        if (metaBoadState[i][j] !== "-") {
+          continue;
+        }
+        let metaBoadStateCopy = BoadManager.copyMetaBoadState(metaBoadState);
+        metaBoadStateCopy[i][j] = "1";
+        if (BoadManager.checkWinner(metaBoadStateCopy) === "1") {
+          score += metaReach;
+        }
+        metaBoadStateCopy[i][j] = "0";
+        if (BoadManager.checkWinner(metaBoadStateCopy) === "0") {
+          score -= metaReach;
+        }
+      }
+    }
+
+    for (let i = 0; i < 3; i++){
+      for (let j = 0; j < 3; j++) {
+        if (metaBoadState[i][j] === "1") {
+          score += metaBlock;
+        } else if (metaBoadState[i][j] === "0") {
+          score -= metaBlock;
+        }
+      }
+    }
+
+    for (let i = 0; i < 3; i++){
+      for (let j = 0; j < 3; j++) {
+        for (let k = 0; k < 3; k++){
+          for (let l = 0; l < 3; l++) {
+            if (boadState[i][j][k][l] !== "-") {
+              continue;
+            }
+            if (metaBoadState[i][j] !== "-") {
+              continue;
+            }
+            let boadStateCopy = BoadManager.copyBoadState(boadState);
+            boadStateCopy[i][j][k][l] = "1";
+            if (BoadManager.checkWinner(boadStateCopy[i][j]) === "1") {
+              score += subReach;
+            }
+            boadStateCopy[i][j][k][l] = "0";
+            if (BoadManager.checkWinner(boadStateCopy[i][j]) === "0") {
+              score -= subReach;
+            }
+          }
+        }
+      }
+    }
+    return score;
+  }
 }

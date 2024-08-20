@@ -74,11 +74,11 @@ export class MainScene extends Phaser.Scene {
             }else{
               // 配置可能なマスの表示
               if (BoadManager.availableCell(this.gameState!, i, j, k, l)) {
-                const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10).setInteractive({
-                  useHandCursor: true
-                });
+                const cell = this.add.zone(x, y, boadWidth/10, boadWidth/10)
                 if (this.gameMode === "duo" || this.player === "0") {
-                  cell.on('pointerdown', () => {
+                  cell.setInteractive({
+                    useHandCursor: true
+                  }).on('pointerdown', () => {
                     this.scene.start('main', BoadManager.updateState(this.gameState!, i, j, k, l));
                   });
                 }

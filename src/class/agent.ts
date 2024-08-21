@@ -3,7 +3,6 @@ import { BoadManager } from "../class/BoadManager";
 
 export class Agent {
   private static instance?: Agent;
-  private gameState?: GameState;
   private difficulty?: "easy" | "hard" | "veryhard";
   public  play?: (gameState: GameState) => {i:number, j:number, k:number, l:number};
 
@@ -29,8 +28,7 @@ export class Agent {
   }
 
   private randomStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
-    this.gameState = gameState;
-    const availableCells = BoadManager.availableCells(this.gameState);
+    const availableCells = BoadManager.availableCells(gameState);
     const randomIndex = Math.floor(Math.random() * availableCells.length);
     return availableCells[randomIndex];
   }

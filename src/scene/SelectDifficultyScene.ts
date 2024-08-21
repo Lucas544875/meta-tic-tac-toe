@@ -31,7 +31,13 @@ export class SelectDifficultyScene extends Phaser.Scene {
 
   create() {
     this.addMode(0, 200, "easy");
+    this.add.text(this.game.canvas.width/2-25, this.game.canvas.height/2 + 190, 'easy', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+
     this.addMode(0, 0, "hard");
+    this.add.text(this.game.canvas.width/2-25, this.game.canvas.height/2 , 'hard', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+
     this.addMode(0, -200, "veryhard");
+    this.add.text(this.game.canvas.width/2-25, this.game.canvas.height/2 - 200, 'veryhard', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+
   }
 }

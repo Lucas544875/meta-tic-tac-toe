@@ -14,6 +14,17 @@ export class BoadManager {
     return metaBoardState.map((row) => [...row]);
   }
 
+  static copyGameState(gameState: GameState): GameState {
+    return {
+      player: gameState.player,
+      gameMode: gameState.gameMode,
+      difficulty: gameState.difficulty,
+      boadState: this.copyBoadState(gameState.boadState),
+      metaBoadState: this.copyMetaBoadState(gameState.metaBoadState),
+      pointedCell: gameState.pointedCell ? {...gameState.pointedCell} : undefined
+    };
+  }
+
   static checkWinner(b:("0"|"1"|"-")[][]): "0"|"1"|"-" {
     for (let i = 0; i < 3; i++) {
       if (b[i][0] !== "-" && b[i][0] === b[i][1] && b[i][1] === b[i][2]) {
@@ -99,6 +110,7 @@ export class BoadManager {
     const nextBoadState = this.copyBoadState(gameState.boadState)
     nextBoadState[i][j][k][l] = gameState.player;
     const nextMetaBoadState = this.copyMetaBoadState(gameState.metaBoadState)
+    // 8/3倍に高速化できる
     if (this.checkWinner(nextBoadState[i][j]) === gameState.player) {
       nextMetaBoadState[i][j] = gameState.player;
     }

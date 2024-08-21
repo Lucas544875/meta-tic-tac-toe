@@ -63,11 +63,11 @@ export class Agent {
   }
 
   private hardStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
-    return this.randomStrategy(gameState);
+    return this.alphabetaStrategy(gameState, 1);
   }
 
   private veryhardStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
-    return this.randomStrategy(gameState);
+    return this.alphabetaStrategy(gameState, 3);
   }
 
   static evaluate(boadState: ("0"|"1"|"-") [][][][], metaBoadState: ("0"|"1"|"-") [][] ): number {
@@ -135,5 +135,66 @@ export class Agent {
       }
     }
     return score;
+  }
+
+  private alphabeta(gameState: GameState, depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
+    if (depth === 0) {
+      return Agent.evaluate(gameState.boadState, gameState.metaBoadState);
+    }
+
+    let availableCells = BoadManager.availableCells(gameState);
+    if (availableCells.length === 0) {
+      return Agent.evaluate(gameState.boadState, gameState.metaBoadState);
+    }
+
+    if (isMaximizing) {
+      let maxScore = -Infinity;
+      for (const cell of availableCells) {
+        let gameStateCopy = BoadManager.copyGameState(gameState);
+        gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
+        let evalScore = this.alphabeta(gameStateCopy, depth-1, alpha, beta, false);
+        maxScore = Math.max(maxScore, evalScore);
+        alpha = Math.max(alpha, evalScore);
+        if (beta <= alpha) {
+          break;
+        }
+      }
+      return maxScore;
+    } else {
+      let minScore = Infinity;
+      for (const cell of availableCells) {
+        let gameStateCopy = BoadManager.copyGameState(gameState);
+        gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
+        let evalScore = this.alphabeta(gameStateCopy, depth-1, alpha, beta, true);
+        minScore = Math.min(minScore, evalScore);
+        beta = Math.min(beta, evalScore);
+        if (beta <= alpha) {
+          break;
+        }
+      }
+      return minScore;
+    }
+  }
+
+  private alphabetaStrategy(gameState: GameState, depth:number): {i:number, j:number, k:number, l:number} {
+    function  fstr(cell:{i:number, j:number, k:number, l:number}) {
+      return "{"+cell.i.toString()+","+cell.j.toString()+","+cell.k.toString()+","+cell.l.toString()+"}";
+    }
+    
+    let bestScore = -Infinity;
+    let bestMove;
+    let availableCells = BoadManager.availableCells(gameState);
+    for (const cell of availableCells) {
+      let gameStateCopy = BoadManager.copyGameState(gameState);
+      gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
+
+      let score = this.alphabeta(gameStateCopy, depth, -Infinity, Infinity, false);
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = cell;
+      }
+    }
+
+    return bestMove!;
   }
 }

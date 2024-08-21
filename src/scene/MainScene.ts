@@ -1,3 +1,4 @@
+import { ModalBehavoir } from 'phaser3-rex-plugins/plugins/modal.js';
 import { GameState } from "../type/GameState";
 import { BoadManager } from "../class/BoadManager";
 import { Agent } from "../class/agent";
@@ -20,6 +21,7 @@ export class MainScene extends Phaser.Scene {
     this.load.image("maru", "assets/maru.png");
     this.load.image("batsu", "assets/batsu.png");
     this.load.image("boad", "assets/boad.png");
+    this.load.image("howToPlay", "assets/howtoplay.png");
   }
 
   init(data: GameState) {
@@ -109,18 +111,62 @@ export class MainScene extends Phaser.Scene {
       }
     }
   }
+
+  private createHowToPlayButton() {
+    const { width, height } = this.game.canvas;
+
+    this.add.image(width-50, height-50, "howToPlay").setDisplaySize(100, 100)
+    .setInteractive({
+      useHandCursor: true
+    })
+    .on('pointerdown',  () => {
+      // Create modal game object after click basePanel
+      let modalGameObject = this.add.container(0, 0);
+      const a = this.add.rectangle(400, 300, 550, 500, 0xffffff)
+      const b = this.add.text(400, 100, 'ルール説明', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+      const rule = `
+ルール説明
+三目並べをしながら三目並べができるゲームです。
+三目並べの盤面が9つあり、それぞれの盤面で三目並べを行います。
+一つの盤面で同じ齣を3つ並べるとその盤面を取ることができます。
+取った盤面が3つ並ぶと勝利です。
+ただし、自分が置くことができる盤面は
+前の手番で置かれた駒の方向にある盤面に限られます。
+盤面がすでに取られている場合、盤面が埋まっている場合、
+初手は好きな場所に置くことができます。
+      `
+      const c = this.add.text(400, 300, rule, {fontSize: 20, fontFamily: "meiryo UI", color: "#000", align:"center"}).setOrigin(0.5);
+      modalGameObject.add([a,b,c]);
+      // button will be destroyed after modal closing
+
+      const modelBehavior = new ModalBehavoir(modalGameObject, {
+        touchOutsideClose: true,
+        duration: {
+          in: 100,
+          out: 100
+        },
+        transitIn: 1,
+        transitOut: 1
+      })
+    }, this)
+  }
   
   create() {
     if (!this.gameMode) {
       return;
     }
-    const { width, height } = this.game.canvas;
-
+    // 盤面の作成
     this.createBoad();
+    
+    // ルール説明ボタンの作成
+    this.createHowToPlayButton();
+
+    // 勝敗が決まったら終了画面に遷移
     if (BoadManager.isHalt(this.gameState!)) {
       this.scene.start('ending', this.gameState);
     }
 
+    // AIの手番
     if (this.gameMode === "solo" && this.player === "1") {
       let cell = this.agent!.play!(this.gameState!)
       this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l));

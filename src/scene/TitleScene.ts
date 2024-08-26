@@ -8,8 +8,7 @@ export class TitleScene extends Phaser.Scene {
   preload() {
     // this.load.image('robot', 'assets/robot.png');
     // this.load.image('logo', 'assets/phaser3-logo.png');
-    this.load.image('solo', 'assets/solo.png');
-    this.load.image('duo', 'assets/duo.png');
+    this.load.image('gamemode', 'assets/gamemode.png');
   }
 
   create() {
@@ -19,14 +18,14 @@ export class TitleScene extends Phaser.Scene {
     
     // 一人で遊ぶモード
     const soloMode = this.add
-    .image(width/2-150, height/2, 'solo')
-    .setDisplaySize(300, 300);
+    .image(width/2-150, height/2, 'gamemode')
+    .setDisplaySize(350, 350);
     soloMode.on('pointerdown', () => {
       this.scene.start('selectDifficulty');
     }).setInteractive({
       useHandCursor: true
     });
-    const soloText = this.add.text(width/2-150, height/2+200, '一人で遊ぶ', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+    const soloText = this.add.text(width/2-150, height/2, 'CPUと対戦', {fontSize: 30, fontFamily: "meiryo UI", color: "#FFF"}).setOrigin(0.5);
 
     // 二人で遊ぶモード
     const gameState:GameState = {
@@ -38,14 +37,14 @@ export class TitleScene extends Phaser.Scene {
     };
 
     const duoMode = this.add
-    .image(width/2+150, height/2, 'duo')
-    .setDisplaySize(300, 300);
+    .image(width/2+150, height/2, 'gamemode')
+    .setDisplaySize(350, 350);
     duoMode.on('pointerdown', () => {
       this.scene.start('main', gameState);
     }).setInteractive({
       useHandCursor: true
     });
-    const duoText = this.add.text(width/2+150, height/2+200, '二人で遊ぶ', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+    const duoText = this.add.text(width/2+150, height/2, '二人で対戦', {fontSize: 30, fontFamily: "meiryo UI", color: "#FFF"}).setOrigin(0.5);
     
   }
 }

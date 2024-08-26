@@ -115,7 +115,7 @@ export class MainScene extends Phaser.Scene {
   private createHowToPlayButton() {
     const { width, height } = this.game.canvas;
 
-    this.add.image(width-50, height-50, "howToPlay").setDisplaySize(100, 100)
+    this.add.image(width-50, height-50, "howToPlay").setDisplaySize(130, 130)
     .setInteractive({
       useHandCursor: true
     })

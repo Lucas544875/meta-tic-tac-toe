@@ -38,6 +38,8 @@ export class EndingScene extends Phaser.Scene {
     const { width, height } = this.game.canvas;
     const boadWidth = Math.min(width, height)*(1/1.1);
     
+    const background = this.add.image(width/2, height/2, 'background').setDisplaySize(width, height).setAlpha(0.7);
+    
     // 盤面の枠
     const boadFrame = this.add.image(width / 2, height / 2, "boad").setDisplaySize(boadWidth*1.1, boadWidth*1.1);
 

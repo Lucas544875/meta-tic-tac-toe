@@ -12,6 +12,7 @@ export class SelectDifficultyScene extends Phaser.Scene {
 
   private addMode(x:number, y:number, mode:"easy"|"hard"|"veryhard") {
     const { width, height } = this.game.canvas;
+    const background = this.add.image(width/2, height/2, 'background').setDisplaySize(width, height).setAlpha(0.7);
     const gameState:GameState = {
       player: "0",
       gameMode: "solo",

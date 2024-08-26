@@ -36,31 +36,36 @@ export class EndingScene extends Phaser.Scene {
     }
 
     const { width, height } = this.game.canvas;
-    const boadWidth = Math.min(width, height);
+    const boadWidth = Math.min(width, height)*(1/1.1);
     
     // 盤面の枠
-    const boadFrame = this.add.image(width / 2, height / 2, "boad").setDisplaySize(height, height);
+    const boadFrame = this.add.image(width / 2, height / 2, "boad").setDisplaySize(boadWidth*1.1, boadWidth*1.1);
 
     // 駒の配置
-    const boadOffsetx = 35;
-    const boadOffsety = 35;
+    const boadOffsetx = 31;
+    const boadOffsety = 31;
     const boad = this.add.container(width/2 - boadWidth/2 + boadOffsetx, height/2 - boadWidth/2 + boadOffsety);
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        const subBoadOffsetx = 0;
-        const subBoadOffsety = 0;
-        const subBoad = this.add.container((boadWidth/3 + subBoadOffsetx)*i, (boadWidth/3 + subBoadOffsety)*j);
+        const subBoadOffsetx = 3;
+        const subBoadOffsety = 3;
+        const subBoad = this.add.container(
+          boadWidth/3 * i - subBoadOffsetx*(i-1),
+          boadWidth/3 * j - subBoadOffsety*(j-1));
         boad.add(subBoad);
         for (let k = 0; k < 3; k++) {
           for (let l = 0; l < 3; l++) {
-            const x = boadWidth*k/9;
-            const y = boadWidth*l/9;
+            const cellOffsetx = 5;
+            const cellOffsety = 5;
+            const x = boadWidth*k/9 - cellOffsetx*(k-1);
+            const y = boadWidth*l/9 - cellOffsety*(l-1);
+
             if (this.boadState[i][j][k][l] === "0") { // 〇の配置
-              const cell = this.add.image(x, y, "maru").setDisplaySize(boadWidth/10, boadWidth/10);
+              const cell = this.add.image(x, y, "maru").setDisplaySize(boadWidth/12, boadWidth/12);
               subBoad.add(cell);
             }else if (this.boadState[i][j][k][l] === "1") { // ×の配置
-              const cell = this.add.image(x, y, "batsu").setDisplaySize(boadWidth/10, boadWidth/10);
+              const cell = this.add.image(x, y, "batsu").setDisplaySize(boadWidth/12, boadWidth/12);
               subBoad.add(cell);
             }
           }

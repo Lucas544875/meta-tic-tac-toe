@@ -111,12 +111,13 @@ export class EndingScene extends Phaser.Scene {
       }
     }
 
-    const retry = this.add.image(width/2, height/2+100, "retry").setDisplaySize(150, 150)
+    const retry = this.add.image(width/2, height/2+100, "retry").setDisplaySize(452*0.65, 184*0.65)
     .setInteractive({
       useHandCursor: true
     })
     .on('pointerdown', () => {
       this.scene.start('title');  // TitleSceneに遷移
     });
+    const retryText = this.add.text(width/2+15, height/2+106, 'タイトルに戻る', {fontSize: 25, fontFamily: "meiryo UI", color: "#000000"}).setOrigin(0.5);
   }
 }

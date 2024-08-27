@@ -4,7 +4,7 @@ import { BoadManager } from "../class/BoadManager";
 export class Agent {
   private static instance?: Agent;
   private difficulty?: "easy" | "hard" | "veryhard";
-  public  play?: (gameState: GameState, callback:(p: number) => void) => {i:number, j:number, k:number, l:number};
+  public  play?: (gameState: GameState, callback:(p: number) => void) => Promise<{i:number, j:number, k:number, l:number}>;
 
   constructor(difficulty: "easy" | "hard" | "veryhard") {
     this.difficulty = difficulty;
@@ -33,7 +33,7 @@ export class Agent {
     return availableCells[randomIndex];
   }
 
-  private easyStrategy(gameState: GameState, callback: (p: number) => void): {i:number, j:number, k:number, l:number} {
+  private async easyStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     const availableCells = BoadManager.availableCells(gameState);
     let candidate = []
     // 揃える手があればその中からランダム
@@ -62,11 +62,11 @@ export class Agent {
     return availableCells[Math.floor(Math.random() * availableCells.length)];
   }
 
-  private hardStrategy(gameState: GameState, callback: (p: number) => void): {i:number, j:number, k:number, l:number} {
+  private async hardStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     return this.alphabetaStrategy(gameState, 1, callback);
   }
 
-  private veryhardStrategy(gameState: GameState, callback: (p: number) => void): {i:number, j:number, k:number, l:number} {
+  private async veryhardStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     return this.alphabetaStrategy(gameState, 5, callback);
   }
 
@@ -176,7 +176,7 @@ export class Agent {
     }
   }
 
-  private alphabetaStrategy(gameState: GameState, depth:number, callback:(p: number) => void): {i:number, j:number, k:number, l:number} {
+  private async alphabetaStrategy(gameState: GameState, depth:number, callback:(p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     function  fstr(cell:{i:number, j:number, k:number, l:number}) {
       return "{"+cell.i.toString()+","+cell.j.toString()+","+cell.k.toString()+","+cell.l.toString()+"}";
     }
@@ -197,9 +197,8 @@ export class Agent {
         bestScore = score;
         bestMove = cell;
       }
-
+      // await new Promise<void>(resolve => {})
     }
-
     return bestMove!;
   }
 }

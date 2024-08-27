@@ -159,8 +159,9 @@ export class MainScene extends Phaser.Scene {
   }
 
   private async playAI(callback: (p: number) => void) {
+    this.updateProgressBar(0.5);
     try{
-      await new Promise<void>(resolve => setTimeout(resolve, 1000))
+      await new Promise<void>(resolve => setTimeout(resolve, 1))
       const cell = await this.agent!.play!(this.gameState!, callback);
       return cell;
     } catch(e) {
@@ -168,18 +169,18 @@ export class MainScene extends Phaser.Scene {
       throw e;
     }
   }
-  
-  private updateProgressBar(p: number) {
+
+  updateProgressBar = (p: number):void =>{
+    const { width, height } = this.game.canvas;
     console.log("Progress:", p);
-    // const { width, height } = this.game.canvas;
-    // this.progressBar?.clear();
-    // const progressBar = this.add.graphics();
-    // progressBar.fillStyle(0xFFFFFF, 1);
-    // progressBar.slice(width-50, 50, 30, -Math.PI*1/2, Math.PI*(-1/2 + 2*p), false);
-    // progressBar.fillPath();
-    // this.progressBar = progressBar;
+    let progressBar = this.add.graphics();
+    progressBar.fillStyle(0xFFFFFF, 1);
+    progressBar.slice(width-50, 50, 30, -Math.PI*1/2, Math.PI*(-1/2 + 2*p), false);
+    progressBar.fillPath();
+    this.progressBar = progressBar;
+    return;
   }
-  
+
   create() {
     if (!this.gameMode) {
       return;
@@ -200,7 +201,7 @@ export class MainScene extends Phaser.Scene {
       // プログレスバーの作成
       this.playAI(this.updateProgressBar).then((cell) => {
         this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l))
-      });    
+      });
     }
   }
 }

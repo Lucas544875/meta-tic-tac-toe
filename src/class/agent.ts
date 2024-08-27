@@ -4,7 +4,7 @@ import { BoadManager } from "../class/BoadManager";
 export class Agent {
   private static instance?: Agent;
   private difficulty?: "easy" | "hard" | "veryhard";
-  public  play?: (gameState: GameState) => {i:number, j:number, k:number, l:number};
+  public  play?: (gameState: GameState, callback:(p: number) => void) => {i:number, j:number, k:number, l:number};
 
   constructor(difficulty: "easy" | "hard" | "veryhard") {
     this.difficulty = difficulty;
@@ -33,7 +33,7 @@ export class Agent {
     return availableCells[randomIndex];
   }
 
-  private easyStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
+  private easyStrategy(gameState: GameState, callback: (p: number) => void): {i:number, j:number, k:number, l:number} {
     const availableCells = BoadManager.availableCells(gameState);
     let candidate = []
     // 揃える手があればその中からランダム
@@ -62,12 +62,12 @@ export class Agent {
     return availableCells[Math.floor(Math.random() * availableCells.length)];
   }
 
-  private hardStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
-    return this.alphabetaStrategy(gameState, 1);
+  private hardStrategy(gameState: GameState, callback: (p: number) => void): {i:number, j:number, k:number, l:number} {
+    return this.alphabetaStrategy(gameState, 1, callback);
   }
 
-  private veryhardStrategy(gameState: GameState): {i:number, j:number, k:number, l:number} {
-    return this.alphabetaStrategy(gameState, 3);
+  private veryhardStrategy(gameState: GameState, callback: (p: number) => void): {i:number, j:number, k:number, l:number} {
+    return this.alphabetaStrategy(gameState, 5, callback);
   }
 
   static evaluate(boadState: ("0"|"1"|"-") [][][][], metaBoadState: ("0"|"1"|"-") [][] ): number {
@@ -176,7 +176,7 @@ export class Agent {
     }
   }
 
-  private alphabetaStrategy(gameState: GameState, depth:number): {i:number, j:number, k:number, l:number} {
+  private alphabetaStrategy(gameState: GameState, depth:number, callback:(p: number) => void): {i:number, j:number, k:number, l:number} {
     function  fstr(cell:{i:number, j:number, k:number, l:number}) {
       return "{"+cell.i.toString()+","+cell.j.toString()+","+cell.k.toString()+","+cell.l.toString()+"}";
     }
@@ -184,7 +184,11 @@ export class Agent {
     let bestScore = -Infinity;
     let bestMove;
     let availableCells = BoadManager.availableCells(gameState);
+    let len = availableCells.length;
+    let progress = 0;
     for (const cell of availableCells) {
+      progress++;
+      callback(progress/len);
       let gameStateCopy = BoadManager.copyGameState(gameState);
       gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
 
@@ -193,6 +197,7 @@ export class Agent {
         bestScore = score;
         bestMove = cell;
       }
+
     }
 
     return bestMove!;

@@ -41,7 +41,7 @@ export class TitleScene extends Phaser.Scene {
     .image(width/2+150, height*2/3, 'gamemode')
     .setDisplaySize(350, 350*166/512);
     duoMode.on('pointerdown', () => {
-      this.scene.start('main', gameState);
+      this.scene.start('ending', gameState);
     }).setInteractive({
       useHandCursor: true
     });

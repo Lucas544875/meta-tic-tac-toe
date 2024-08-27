@@ -197,7 +197,7 @@ export class Agent {
         bestScore = score;
         bestMove = cell;
       }
-      // await new Promise<void>(resolve => {})
+      await new Promise<void>(resolve => setTimeout(resolve, 1))
     }
     return bestMove!;
   }

@@ -159,7 +159,6 @@ export class MainScene extends Phaser.Scene {
   }
 
   private async playAI(callback: (p: number) => void) {
-    this.updateProgressBar(0.5);
     try{
       await new Promise<void>(resolve => setTimeout(resolve, 1))
       const cell = await this.agent!.play!(this.gameState!, callback);
@@ -172,9 +171,8 @@ export class MainScene extends Phaser.Scene {
 
   updateProgressBar = (p: number):void =>{
     const { width, height } = this.game.canvas;
-    console.log("Progress:", p);
     let progressBar = this.add.graphics();
-    progressBar.fillStyle(0xFFFFFF, 1);
+    progressBar.fillStyle(0xFFFFFF, 0.5);
     progressBar.slice(width-50, 50, 30, -Math.PI*1/2, Math.PI*(-1/2 + 2*p), false);
     progressBar.fillPath();
     this.progressBar = progressBar;

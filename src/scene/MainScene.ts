@@ -12,6 +12,7 @@ export class MainScene extends Phaser.Scene {
   private metaBoadState?: ("0" | "1" | "-")[][];
   private pointedCell?: {i:number, j:number, k:number, l:number};
   private agent?: Agent;
+  private progressBar?: Phaser.GameObjects.Graphics;
 
   constructor() {
     super('main');
@@ -156,7 +157,28 @@ export class MainScene extends Phaser.Scene {
       })
     }, this)
   }
-  
+
+  private async playAI(callback: (p: number) => void) {
+    try{
+      await new Promise<void>(resolve => setTimeout(resolve, 1))
+      const cell = await this.agent!.play!(this.gameState!, callback);
+      return cell;
+    } catch(e) {
+      console.error("Error during AI play:", e);
+      throw e;
+    }
+  }
+
+  updateProgressBar = (p: number):void =>{
+    const { width, height } = this.game.canvas;
+    let progressBar = this.add.graphics();
+    progressBar.fillStyle(0xFFFFFF, 0.5);
+    progressBar.slice(width-50, 50, 30, -Math.PI*1/2, Math.PI*(-1/2 + 2*p), false);
+    progressBar.fillPath();
+    this.progressBar = progressBar;
+    return;
+  }
+
   create() {
     if (!this.gameMode) {
       return;
@@ -174,8 +196,10 @@ export class MainScene extends Phaser.Scene {
 
     // AIの手番
     if (this.gameMode === "solo" && this.player === "1") {
-      let cell = this.agent!.play!(this.gameState!)
-      this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l));
+      // プログレスバーの作成
+      this.playAI(this.updateProgressBar).then((cell) => {
+        this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l))
+      });
     }
   }
 }

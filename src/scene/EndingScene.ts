@@ -105,9 +105,11 @@ export class EndingScene extends Phaser.Scene {
       if (this.winner === "-") {
         this.add.text(width/2, height/2-100, `引き分け`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "0") {
-        this.add.text(width/2, height/2-100, `〇の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.image(width/2-45, height/2-100, "maru").setDisplaySize(50, 50).setOrigin(0.5);
+        this.add.text(width/2+25, height/2-100, `の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }else if (this.winner === "1") {
-        this.add.text(width/2, height/2-100, `×の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.image(width/2-45, height/2-100, "batsu").setDisplaySize(50, 50).setOrigin(0.5);
+        this.add.text(width/2+25, height/2-100, `の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
       }
     }
 

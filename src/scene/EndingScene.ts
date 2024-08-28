@@ -95,21 +95,21 @@ export class EndingScene extends Phaser.Scene {
 
     if (this.gameMode === "solo" && this.difficulty) {
       if (this.winner === "-") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に引き分け`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に引き分け`, {fontSize: 30, fontFamily: "Zen Maru Gothic"}).setOrigin(0.5);
       }else if (this.winner === "1") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に敗北`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に敗北`, {fontSize: 30, fontFamily: "Zen Maru Gothic"}).setOrigin(0.5);
       }else if (this.winner === "0") {
-        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に勝利`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `難易度:${this.difficulty}に勝利`, {fontSize: 30, fontFamily: "Zen Maru Gothic"}).setOrigin(0.5);
       }
     }else if (this.gameMode === "duo") {
       if (this.winner === "-") {
-        this.add.text(width/2, height/2-100, `引き分け`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.text(width/2, height/2-100, `引き分け`, {fontSize: 30, fontFamily: "Zen Maru Gothic"}).setOrigin(0.5);
       }else if (this.winner === "0") {
         this.add.image(width/2-45, height/2-100, "maru").setDisplaySize(50, 50).setOrigin(0.5);
-        this.add.text(width/2+25, height/2-100, `の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.text(width/2+25, height/2-100, `の勝ち`, {fontSize: 30, fontFamily: "Zen Maru Gothic"}).setOrigin(0.5);
       }else if (this.winner === "1") {
         this.add.image(width/2-45, height/2-100, "batsu").setDisplaySize(50, 50).setOrigin(0.5);
-        this.add.text(width/2+25, height/2-100, `の勝ち`, {fontSize: 30, fontFamily: "meiryo UI"}).setOrigin(0.5);
+        this.add.text(width/2+25, height/2-100, `の勝ち`, {fontSize: 30, fontFamily: "Zen Maru Gothic"}).setOrigin(0.5);
       }
     }
 
@@ -120,6 +120,6 @@ export class EndingScene extends Phaser.Scene {
     .on('pointerdown', () => {
       this.scene.start('title');  // TitleSceneに遷移
     });
-    const retryText = this.add.text(width/2+15, height/2+106, 'タイトルに戻る', {fontSize: 25, fontFamily: "meiryo UI", color: "#000000"}).setOrigin(0.5);
+    const retryText = this.add.text(width/2+15, height/2+106, 'タイトルに戻る', {fontSize: 25, fontFamily: "Zen Maru Gothic", color: "#000000"}).setOrigin(0.5);
   }
 }

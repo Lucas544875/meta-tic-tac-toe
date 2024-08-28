@@ -15,7 +15,7 @@ export class TitleScene extends Phaser.Scene {
   create() {
     const { width, height } = this.game.canvas;
     const background = this.add.image(width/2, height/2, 'background').setDisplaySize(width, height);
-    const title = this.add.text(width/2, 100, '超三目並べ', {fontSize: 50, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+    const title = this.add.text(width/2, 100, '超三目並べ', {fontSize: 50, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
     
     // 一人で遊ぶモード
     const soloMode = this.add
@@ -26,7 +26,7 @@ export class TitleScene extends Phaser.Scene {
     }).setInteractive({
       useHandCursor: true
     });
-    const soloText = this.add.text(width/2-150, height*2/3, 'CPUと対戦', {fontSize: 30, fontFamily: "meiryo UI", color: "#FFF"}).setOrigin(0.5);
+    const soloText = this.add.text(width/2-150, height*2/3+2, 'CPUと対戦', {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#FFF"}).setOrigin(0.5);
 
     // 二人で遊ぶモード
     const gameState:GameState = {
@@ -45,7 +45,7 @@ export class TitleScene extends Phaser.Scene {
     }).setInteractive({
       useHandCursor: true
     });
-    const duoText = this.add.text(width/2+150, height*2/3, '二人で対戦', {fontSize: 30, fontFamily: "meiryo UI", color: "#FFF"}).setOrigin(0.5);
+    const duoText = this.add.text(width/2+150, height*2/3+2, '二人で対戦', {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#FFF"}).setOrigin(0.5);
     
   }
 }

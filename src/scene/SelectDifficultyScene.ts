@@ -34,13 +34,13 @@ export class SelectDifficultyScene extends Phaser.Scene {
     const background = this.add.image(width/2, height/2, 'background').setDisplaySize(width, height);
 
     this.addMode(0, 170, 450*0.8, 200*0.8, "easy");
-    this.add.text(this.game.canvas.width/2, this.game.canvas.height/2 + 177, 'EASY', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+    this.add.text(this.game.canvas.width/2, this.game.canvas.height/2 + 177, 'EASY', {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
 
     this.addMode(0, 0, 512*0.8, 200*0.8, "hard");
-    this.add.text(this.game.canvas.width/2, this.game.canvas.height/2+4 , 'HARD', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+    this.add.text(this.game.canvas.width/2, this.game.canvas.height/2+4 , 'HARD', {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
 
     this.addMode(0, -170, 512*0.8, 210*0.8, "veryhard");
-    this.add.text(this.game.canvas.width/2, this.game.canvas.height/2 - 163, 'VERYHARD', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+    this.add.text(this.game.canvas.width/2, this.game.canvas.height/2 - 163, 'VERYHARD', {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
 
   }
 }

@@ -130,7 +130,7 @@ export class MainScene extends Phaser.Scene {
       // Create modal game object after click basePanel
       let modalGameObject = this.add.container(0, 0);
       const a = this.add.rectangle(400, 300, 550, 500, 0xffffff)
-      const b = this.add.text(400, 100, 'ルール説明', {fontSize: 30, fontFamily: "meiryo UI", color: "#000"}).setOrigin(0.5);
+      const b = this.add.text(400, 100, 'ルール説明', {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
       const rule = `
 ルール説明
 三目並べをしながら三目並べができるゲームです。
@@ -142,7 +142,7 @@ export class MainScene extends Phaser.Scene {
 盤面がすでに取られている場合、盤面が埋まっている場合、
 初手は好きな場所に置くことができます。
       `
-      const c = this.add.text(400, 300, rule, {fontSize: 20, fontFamily: "meiryo UI", color: "#000", align:"center"}).setOrigin(0.5);
+      const c = this.add.text(400, 300, rule, {fontSize: 20, fontFamily: "Zen Maru Gothic", color: "#000", align:"center"}).setOrigin(0.5);
       modalGameObject.add([a,b,c]);
       // button will be destroyed after modal closing
 

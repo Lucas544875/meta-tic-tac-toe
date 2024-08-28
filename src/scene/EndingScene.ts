@@ -120,6 +120,6 @@ export class EndingScene extends Phaser.Scene {
     .on('pointerdown', () => {
       this.scene.start('title');  // TitleSceneに遷移
     });
-    const retryText = this.add.text(width/2+15, height/2+106, 'タイトルに戻る', {fontSize: 25, fontFamily: "Zen Maru Gothic", color: "#000000"}).setOrigin(0.5);
+    const retryText = this.add.text(width/2+15, height/2+106, 'タイトルに戻る', {fontSize: 21, fontFamily: "Zen Maru Gothic", color: "#000000"}).setOrigin(0.5);
   }
 }

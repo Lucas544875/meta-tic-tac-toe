@@ -32,7 +32,7 @@ export class Agent {
     const randomIndex = Math.floor(Math.random() * availableCells.length);
     return availableCells[randomIndex];
   }
-// バグってそう
+  
   private async easyStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     const availableCells = BoadManager.availableCells(gameState);
     let candidate = []

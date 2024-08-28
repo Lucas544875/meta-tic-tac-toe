@@ -83,7 +83,7 @@ export class BoadManager {
           if(gameState.metaBoadState[i][j] === "-") {
             for(let k = 0; k < 3; k++) {
               for(let l = 0; l < 3; l++) {
-                if (gameState.metaBoadState[i][j] === "-") {
+                if (gameState.boadState[i][j][k][l] === "-") {
                   result.push({i, j, k, l});
                 }
               }

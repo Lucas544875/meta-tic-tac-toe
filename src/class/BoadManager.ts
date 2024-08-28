@@ -71,7 +71,10 @@ export class BoadManager {
         }
       }
       return result;
-    }else if(gameState.metaBoadState[gameState.pointedCell.k][gameState.pointedCell.l] !== "-" || gameState.boadState[gameState.pointedCell.k][gameState.pointedCell.l].every(row => row.every(cell => cell !== "-"))){
+    }else if(
+      gameState.metaBoadState[gameState.pointedCell.k][gameState.pointedCell.l] !== "-" 
+      || gameState.boadState[gameState.pointedCell.k][gameState.pointedCell.l].every(row => row.every(cell => cell !== "-"))
+    ){
       // pointedCellがあり、メタマスの大勢が決している場合
       // pointedCellがあり、メタマスがすべて埋まっている場合
       let result = [];

@@ -17,10 +17,12 @@ export class LoadingScene extends Phaser.Scene {
     const { width, height } = this.game.canvas;
 
     // ロゴ画像を中央に表示
-    this.add.image(width/2, height/2, 'logo');
+    const logo = this.add.image(width/2, 230, 'logo').setDisplaySize(980*0.5, 800*0.5);
+
+    const baseLine = height*4/5
 
     // テキストをロゴの下に表示
-    this.add.text(width/2, height/2 + 60, 'Loading...').setOrigin(0.5);
+    this.add.text(width/2, baseLine, 'Loading...',  {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#FFF"}).setOrigin(0.5);
 
     // アセットをロード（一度ロードしたアセットは他のシーンでも使用可）
     // this.load.image('street', 'assets/street.png');

@@ -4,7 +4,7 @@ import { BoadManager } from "../class/BoadManager";
 export class Agent {
   private static instance?: Agent;
   private difficulty?: "easy" | "hard" | "veryhard";
-  public  play?: (gameState: GameState, callback:(p: number) => void) => Promise<{i:number, j:number, k:number, l:number}>;
+  public  play?: (gameState: GameState, player : "0" | "1", callback:(p: number) => void) => Promise<{i:number, j:number, k:number, l:number}>;
 
   constructor(difficulty: "easy" | "hard" | "veryhard") {
     this.difficulty = difficulty;
@@ -33,7 +33,7 @@ export class Agent {
     return availableCells[randomIndex];
   }
   
-  private async easyStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
+  private async easyStrategy(gameState: GameState, player: "0" | "1", callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     const availableCells = BoadManager.availableCells(gameState);
     let candidate = []
     // 揃える手があればその中からランダム
@@ -62,12 +62,12 @@ export class Agent {
     return availableCells[Math.floor(Math.random() * availableCells.length)];
   }
 
-  private async hardStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
-    return this.alphabetaStrategy(gameState, 1, callback);
+  private async hardStrategy(gameState: GameState, player: "0" | "1", callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
+    return this.alphabetaStrategy(gameState, player, 1, callback);
   }
 
-  private async veryhardStrategy(gameState: GameState, callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
-    return this.alphabetaStrategy(gameState, 5, callback);
+  private async veryhardStrategy(gameState: GameState, player: "0" | "1", callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
+    return this.alphabetaStrategy(gameState, player, 5, callback);
   }
 
   static evaluate(boadState: ("0"|"1"|"-") [][][][], metaBoadState: ("0"|"1"|"-") [][] ): number {
@@ -137,14 +137,14 @@ export class Agent {
     return score;
   }
 
-  private alphabeta(gameState: GameState, depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
+  private alphabeta(gameState: GameState, coefficent:number ,depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
     if (depth === 0) {
-      return Agent.evaluate(gameState.boadState, gameState.metaBoadState);
+      return coefficent*Agent.evaluate(gameState.boadState, gameState.metaBoadState);
     }
 
     let availableCells = BoadManager.availableCells(gameState);
     if (availableCells.length === 0) {
-      return Agent.evaluate(gameState.boadState, gameState.metaBoadState);
+      return coefficent*Agent.evaluate(gameState.boadState, gameState.metaBoadState);
     }
 
     if (isMaximizing) {
@@ -152,7 +152,7 @@ export class Agent {
       for (const cell of availableCells) {
         let gameStateCopy = BoadManager.copyGameState(gameState);
         gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
-        let evalScore = this.alphabeta(gameStateCopy, depth-1, alpha, beta, false);
+        let evalScore = this.alphabeta(gameStateCopy,coefficent, depth-1, alpha, beta, false);
         maxScore = Math.max(maxScore, evalScore);
         alpha = Math.max(alpha, evalScore);
         if (beta <= alpha) {
@@ -165,7 +165,7 @@ export class Agent {
       for (const cell of availableCells) {
         let gameStateCopy = BoadManager.copyGameState(gameState);
         gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
-        let evalScore = this.alphabeta(gameStateCopy, depth-1, alpha, beta, true);
+        let evalScore = this.alphabeta(gameStateCopy,coefficent, depth-1, alpha, beta, true);
         minScore = Math.min(minScore, evalScore);
         beta = Math.min(beta, evalScore);
         if (beta <= alpha) {
@@ -176,11 +176,13 @@ export class Agent {
     }
   }
 
-  private async alphabetaStrategy(gameState: GameState, depth:number, callback:(p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
+  private async alphabetaStrategy(gameState: GameState, player: "0" | "1", depth:number, callback:(p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     function  fstr(cell:{i:number, j:number, k:number, l:number}) {
       return "{"+cell.i.toString()+","+cell.j.toString()+","+cell.k.toString()+","+cell.l.toString()+"}";
     }
-    
+    let isLater = player === "1";
+    let coefficent = isLater ? 1 : -1;
+
     let bestScore = -Infinity;
     let bestMove;
     let availableCells = BoadManager.availableCells(gameState);
@@ -192,7 +194,7 @@ export class Agent {
       let gameStateCopy = BoadManager.copyGameState(gameState);
       gameStateCopy = BoadManager.updateState(gameStateCopy, cell.i, cell.j, cell.k, cell.l);
 
-      let score = this.alphabeta(gameStateCopy, depth, -Infinity, Infinity, false);
+      let score = this.alphabeta(gameStateCopy, coefficent, depth, -Infinity, Infinity, false);
       if (score > bestScore) {
         bestScore = score;
         bestMove = cell;

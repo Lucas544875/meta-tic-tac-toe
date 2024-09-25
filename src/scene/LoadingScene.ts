@@ -8,7 +8,7 @@ export class LoadingScene extends Phaser.Scene {
   preload() {
     // ロゴ画像だけは最初から表示したいので予めロード
     // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
-    this.load.image("logo", "assets/Logo_blur.png");
+    this.load.image("loading", "assets/loading.png");
   }
 
   // create()はpreload内のアセットのロードが完了したら実行される
@@ -17,7 +17,7 @@ export class LoadingScene extends Phaser.Scene {
     const { width, height } = this.game.canvas;
 
     // ロゴ画像を中央に表示
-    const logo = this.add.image(width/2, 230, 'logo').setDisplaySize(980*0.5, 800*0.5);
+    const logo = this.add.image(width/2, 230, 'loading').setDisplaySize(1280*0.6, 720*0.6);
 
     const baseLine = height*4/5
 
@@ -25,6 +25,7 @@ export class LoadingScene extends Phaser.Scene {
     this.add.text(width/2, baseLine, 'Loading...',  {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
 
     // アセットをロード（一度ロードしたアセットは他のシーンでも使用可）
+    this.load.image("logo", "assets/Logo_blur.png");
     this.load.image('gamemode', 'assets/gamemode.png');
     this.load.image('background', 'assets/background.png');
     this.load.image("maru", "assets/maru.png");

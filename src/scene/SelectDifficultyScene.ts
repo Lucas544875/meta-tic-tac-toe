@@ -4,11 +4,11 @@ export class SelectDifficultyScene extends Phaser.Scene {
     super("selectDifficulty");
   }
 
-  preload() {
-    this.load.image('easy', 'assets/easy.png');
-    this.load.image('hard', 'assets/hard.png');
-    this.load.image('veryhard', 'assets/veryhard.png');
-  }
+  // preload() {
+  //   this.load.image('easy', 'assets/easy.png');
+  //   this.load.image('hard', 'assets/hard.png');
+  //   this.load.image('veryhard', 'assets/veryhard.png');
+  // }
 
   private addMode(x:number, y:number, imgWidth:number, imgHeight:number,  mode:"easy"|"hard"|"veryhard") {
     const { width, height } = this.game.canvas;

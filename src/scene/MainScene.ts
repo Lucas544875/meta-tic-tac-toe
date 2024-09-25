@@ -18,13 +18,13 @@ export class MainScene extends Phaser.Scene {
     super('main');
   }
   
-  preload() {
-    this.load.image("maru", "assets/maru.png");
-    this.load.image("batsu", "assets/batsu.png");
-    this.load.image("boad", "assets/boad.png");
-    this.load.image("howToPlay", "assets/howtoplay.png");
-    this.load.image("background", "assets/background.png");
-  }
+  // preload() {
+  //   this.load.image("maru", "assets/maru.png");
+  //   this.load.image("batsu", "assets/batsu.png");
+  //   this.load.image("boad", "assets/boad.png");
+  //   this.load.image("howToPlay", "assets/howtoplay.png");
+  //   this.load.image("background", "assets/background.png");
+  // }
 
   init(data: GameState) {
     this.gameState = data;

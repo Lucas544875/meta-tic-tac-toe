@@ -22,12 +22,20 @@ export class LoadingScene extends Phaser.Scene {
     const baseLine = height*4/5
 
     // テキストをロゴの下に表示
-    this.add.text(width/2, baseLine, 'Loading...',  {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#FFF"}).setOrigin(0.5);
+    this.add.text(width/2, baseLine, 'Loading...',  {fontSize: 30, fontFamily: "Zen Maru Gothic", color: "#000"}).setOrigin(0.5);
 
     // アセットをロード（一度ロードしたアセットは他のシーンでも使用可）
-    // this.load.image('street', 'assets/street.png');
-    // this.load.image('robot', 'assets/robot.png');
-    
+    this.load.image('gamemode', 'assets/gamemode.png');
+    this.load.image('background', 'assets/background.png');
+    this.load.image("maru", "assets/maru.png");
+    this.load.image("batsu", "assets/batsu.png");
+    this.load.image("boad", "assets/boad.png");
+    this.load.image("retry", "assets/retry.png");
+    this.load.image("howToPlay", "assets/howtoplay.png");
+    this.load.image('easy', 'assets/easy.png');
+    this.load.image('hard', 'assets/hard.png');
+    this.load.image('veryhard', 'assets/veryhard.png');
+
     // アセットのロードが完了したらTitleSceneに遷移
     this.load.on('complete', () => {
       this.scene.start('title');

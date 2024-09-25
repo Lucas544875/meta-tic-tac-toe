@@ -14,12 +14,12 @@ export class EndingScene extends Phaser.Scene {
     super('ending');
   }
 
-  preload() {
-    this.load.image("maru", "assets/maru.png");
-    this.load.image("batsu", "assets/batsu.png");
-    this.load.image("boad", "assets/boad.png");
-    this.load.image("retry", "assets/retry.png");
-  }
+  // preload() {
+  //   this.load.image("maru", "assets/maru.png");
+  //   this.load.image("batsu", "assets/batsu.png");
+  //   this.load.image("boad", "assets/boad.png");
+  //   this.load.image("retry", "assets/retry.png");
+  // }
 
   init(data: GameState) {
     this.gameState = data;

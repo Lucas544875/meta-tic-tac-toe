@@ -5,12 +5,10 @@ export class TitleScene extends Phaser.Scene {
     super('title');
   }
 
-  preload() {
-    // this.load.image('robot', 'assets/robot.png');
-    // this.load.image('logo', 'assets/phaser3-logo.png');
-    this.load.image('gamemode', 'assets/gamemode.png');
-    this.load.image('background', 'assets/background.png');
-  }
+  // preload() {
+  //   this.load.image('gamemode', 'assets/gamemode.png');
+  //   this.load.image('background', 'assets/background.png');
+  // }
 
   create() {
     const { width, height } = this.game.canvas;

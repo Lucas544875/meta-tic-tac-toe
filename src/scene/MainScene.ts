@@ -197,7 +197,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     // AIの手番
-    if (this.gameMode === "solo" && this.player === "1") {
+    if (this.gameMode === "solo" && this.player === "1" && !BoadManager.isHalt(this.gameState!)) {
       // プログレスバーの作成
       this.playAI(this.updateProgressBar).then((cell) => {
         this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l))

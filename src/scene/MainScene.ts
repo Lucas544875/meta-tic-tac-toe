@@ -13,6 +13,7 @@ export class MainScene extends Phaser.Scene {
   private pointedCell?: {i:number, j:number, k:number, l:number};
   private agent?: Agent;
   private progressBar?: Phaser.GameObjects.Graphics;
+  private agent2?: Agent;
 
   constructor() {
     super('main');
@@ -36,6 +37,7 @@ export class MainScene extends Phaser.Scene {
     this.pointedCell = data.pointedCell || undefined;
     if (this.difficulty !== null) {
       this.agent = Agent.getInstance(this.difficulty);
+      this.agent2 = Agent.getInstance("developper");
     }
   }
 
@@ -170,6 +172,16 @@ export class MainScene extends Phaser.Scene {
       throw e;
     }
   }
+  private async playAI2(player: "0" | "1", callback: (p: number) => void) {
+    try{
+      await new Promise<void>(resolve => setTimeout(resolve, 1))
+      const cell = await this.agent2!.play!(this.gameState!, player!, callback);
+      return cell;
+    } catch(e) {
+      console.error("Error during AI play:", e);
+      throw e;
+    }
+  }
 
   updateProgressBar = (p: number):void =>{
     const { width, height } = this.game.canvas;
@@ -197,9 +209,16 @@ export class MainScene extends Phaser.Scene {
     }
 
     // AIの手番
-    if (this.gameMode === "solo"  && !BoadManager.isHalt(this.gameState!)) {
+    if (this.gameMode === "solo" && this.player == "1" && !BoadManager.isHalt(this.gameState!)) {
       // プログレスバーの作成
       this.playAI(this.player!, this.updateProgressBar).then((cell) => {
+        this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l))
+      });
+    }
+
+    if (this.gameMode === "solo" && this.player == "0" && !BoadManager.isHalt(this.gameState!)) {
+      // プログレスバーの作成
+      this.playAI2(this.player!, this.updateProgressBar).then((cell) => {
         this.scene.start('main', BoadManager.updateState(this.gameState!, cell.i, cell.j, cell.k, cell.l))
       });
     }

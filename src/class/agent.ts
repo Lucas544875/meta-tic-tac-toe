@@ -3,10 +3,10 @@ import { BoadManager } from "../class/BoadManager";
 
 export class Agent {
   private static instance?: Agent;
-  private difficulty?: "easy" | "hard" | "veryhard";
+  private difficulty?: "easy" | "hard" | "veryhard" | "developper";
   public  play?: (gameState: GameState, player : "0" | "1", callback:(p: number) => void) => Promise<{i:number, j:number, k:number, l:number}>;
 
-  constructor(difficulty: "easy" | "hard" | "veryhard") {
+  constructor(difficulty: "easy" | "hard" | "veryhard" | "developper") {
     this.difficulty = difficulty;
     switch (difficulty){
       case "veryhard":
@@ -17,10 +17,12 @@ export class Agent {
         break;
       case "easy":
         this.play = this.easyStrategy;
+      case "developper":
+        this.play = this.developperStrategy;
     }
   }
 
-  public static getInstance(difficulty: "easy" | "hard" | "veryhard"): Agent {
+  public static getInstance(difficulty: "easy" | "hard" | "veryhard" | "developper"): Agent {
     if(!this.instance || this.instance.difficulty !== difficulty) {
       this.instance = new Agent(difficulty);
     }
@@ -68,6 +70,10 @@ export class Agent {
 
   private async veryhardStrategy(gameState: GameState, player: "0" | "1", callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
     return this.alphabetaStrategy(gameState, player, 5, callback);
+  }
+
+  private async developperStrategy(gameState: GameState, player: "0" | "1", callback: (p: number) => void): Promise<{i:number, j:number, k:number, l:number}> {
+    return this.alphabetaStrategy(gameState, player, 6, callback);
   }
 
   static evaluate(boadState: ("0"|"1"|"-") [][][][], metaBoadState: ("0"|"1"|"-") [][] ): number {

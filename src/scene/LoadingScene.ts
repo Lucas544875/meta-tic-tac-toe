@@ -8,7 +8,7 @@ export class LoadingScene extends Phaser.Scene {
   preload() {
     // ロゴ画像だけは最初から表示したいので予めロード
     // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
-    this.load.image("logo", "assets/Logo.png");
+    this.load.image("logo", "assets/Logo_blur.png");
   }
 
   // create()はpreload内のアセットのロードが完了したら実行される

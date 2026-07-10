@@ -8,7 +8,13 @@ const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
-  backgroundColor: '#FFFFFF',
+  scale: {
+    // Keep the 800x600 game coordinate system and only scale its presentation.
+    // This preserves the many pixel-based positions used throughout the scenes.
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.NO_CENTER
+  },
+  backgroundColor: '#000000',
   parent: 'game-app',
   scene: Scenes,  // 変更
   plugins: {
